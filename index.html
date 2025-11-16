@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digittron</title>
+    <title>Digitron - Advanced Calculator</title>
     <style>
         * {
             margin: 0;
@@ -397,7 +397,8 @@
             opacity: 1;
         }
 
-        @media (max-width: 768px) {
+        /* Responsive Design - Breakpoint at 800px */
+        @media (max-width: 800px) {
             .container {
                 flex-direction: column;
                 align-items: center;
@@ -406,6 +407,7 @@
             .history-panel {
                 width: 100%;
                 max-width: 500px;
+                max-height: 300px;
             }
 
             .calculator {
@@ -419,6 +421,51 @@
 
             .display {
                 font-size: 28px;
+            }
+
+            .title {
+                font-size: 20px;
+            }
+
+            .toggle-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .btn-function {
+                font-size: 12px;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .calculator {
+                padding: 20px;
+            }
+
+            .history-panel {
+                padding: 20px;
+            }
+
+            button {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .display {
+                font-size: 24px;
+            }
+
+            .scientific-buttons {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .memory-buttons {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
@@ -439,6 +486,13 @@
         button:hover .tooltip {
             opacity: 1;
         }
+
+        /* Mobile-specific optimizations */
+        @media (hover: none) {
+            button:active {
+                transform: scale(0.95);
+            }
+        }
     </style>
 </head>
 <body>
@@ -446,7 +500,7 @@
         <div class="calculator">
             <div class="header">
                 <div class="title">
-                    <span>🧮</span>
+                    <span>🔢</span>
                     <span>Digitron</span>
                 </div>
                 <div class="mode-toggle">
@@ -838,7 +892,7 @@
         updateDisplay();
         
         // Load history from localStorage
-        const savedHistory = localStorage.getItem('calculatorHistory');
+        const savedHistory = localStorage.getItem('digitronHistory');
         if (savedHistory) {
             history = JSON.parse(savedHistory);
             updateHistoryDisplay();
@@ -846,8 +900,21 @@
 
         // Save history to localStorage
         window.addEventListener('beforeunload', function() {
-            localStorage.setItem('calculatorHistory', JSON.stringify(history));
+            localStorage.setItem('digitronHistory', JSON.stringify(history));
         });
+
+        // Touch optimization for mobile
+        if ('ontouchstart' in window) {
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                });
+                
+                button.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                });
+            });
+        }
     </script>
 </body>
 </html>
